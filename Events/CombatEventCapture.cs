@@ -57,7 +57,7 @@ public class CombatEventCapture : IDisposable {
             if (effectHeader->NumTargets == 0)
                 return;
 
-            var actionId = effectHeader->ActionType switch {
+            var actionId = ((ActionType)effectHeader->ActionType) switch {
                 ActionType.Mount => 0xD000000 + effectHeader->ActionId,
                 ActionType.Item => 0x2000000 + effectHeader->ActionId,
                 _ => effectHeader->SpellId
@@ -118,7 +118,7 @@ public class CombatEventCapture : IDisposable {
                                     DamageType = (DamageType)(actionEffect.Param1 & 0xF),
                                     Parried = actionEffect.Type == (int)ActionEffectType.ParriedDamage,
                                     Blocked = actionEffect.Type == (int)ActionEffectType.BlockedDamage,
-                                    DisplayType = effectHeader->ActionType
+                                    DisplayType = (ActionType)effectHeader->ActionType
                                 });
                             break;
                         case ActionEffectType.Heal:
